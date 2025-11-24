@@ -802,15 +802,24 @@
         });
 
         // Simple Visitor Counter (using localStorage)
-        document.addEventListener('DOMContentLoaded', function() {
-            let count = localStorage.getItem('visitorCount');
-            if (count === null) {
-                count = 0;
-            }
-            count = parseInt(count) + 1;
-            localStorage.setItem('visitorCount', count);
-            document.getElementById('visitorCount').textContent = count;
-        });
+// Improved Visitor Counter - Only counts once per session
+   document.addEventListener('DOMContentLoaded', function() {
+    let count = localStorage.getItem('visitorCount');
+    let hasVisited = sessionStorage.getItem('hasVisited');
+    
+    if (count === null) {
+        count = 0;
+    }
+    
+    // Only increment if this is the first visit in this session
+    if (!hasVisited) {
+        count = parseInt(count) + 1;
+        localStorage.setItem('visitorCount', count);
+        sessionStorage.setItem('hasVisited', 'true');
+    }
+    
+    document.getElementById('visitorCount').textContent = count;
+});
 
         // Contact Form Submission
         document.getElementById('contactForm').addEventListener('submit', function(e) {
